@@ -14,9 +14,10 @@ public:
   Led redLed;
   Led greenLed;
   int targetPin;
+  int hitTime = 2000;
   bool active = false;
   float startTime;
-  int hitTime = 3000;
+
 
   Target(int target, int red, int green) {
     redLed.construct(red);
@@ -28,16 +29,16 @@ public:
     active = true;
     redLed.on();
     startTime = millis();
+    
   }
 
-  bool isActive() {
-     bool sactive = (active && millis() - startTime > hitTime);
-     if (sactive == false) {
-       redLed.off();
-       active = false;
-     }
-     //Serial.print(active);
-     return sactive;
+  bool update() {
+    //Serial.print(active == true);Serial.print(" ");Serial.print(millis() - startTime);Serial.print(" ");Serial.print(hitTime);Serial.print("\n");
+    if (millis() - startTime > hitTime) {
+      active = false;
+      redLed.off();
+      startTime = millis();
+    }
   }
 
   bool hit() { bool hited = digitalRead(targetPin); }
@@ -57,18 +58,20 @@ void loop() {
   if (isAnyTargetActive() == false) {
     activateRandom();
   } else {
-    
+    target_1.update();
+    target_2.update();
+    target_3.update();
+    target_4.update();
   }
-  delay(300);
+  //delay(500);
 }
 
 bool isAnyTargetActive() {
-  return (target_1.isActive() || target_2.isActive() || target_3.isActive());
+  return (target_1.active || target_2.active|| target_3.active || target_4.active);
 }
 
 void activateRandom() {
   int targetNr = random(1,5);
-  Serial.print(targetNr);
   switch (targetNr) {
     case 1:
       target_1.activate();
