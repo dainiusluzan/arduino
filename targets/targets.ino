@@ -39,9 +39,13 @@ public:
       redLed.off();
       startTime = millis();
     }
+    if (digitalRead(targetPin) == 1) {
+      Serial.print(digitalRead(targetPin));Serial.print(" ");Serial.print(millis() - startTime);Serial.print(" ");Serial.print(hitTime);Serial.print("\n");
+      active = false;
+      redLed.off();
+      startTime = millis();
+    }
   }
-
-  bool hit() { bool hited = digitalRead(targetPin); }
 };
 
 Target target_1(1, 2, 3);
