@@ -73,10 +73,10 @@ class Target {
 const int RED = 1;
 const int BLUE = 2;
 
-Target target_1(1, 5, 6);
-Target target_2(2, 7, 8);
-Target target_3(3, 9, 10);
-Target target_4(4, 11, 12);
+Target target_1(22, 42, 43);
+Target target_2(24, 36, 37);
+Target target_3(26, 40, 41);
+Target target_4(28, 38, 39);
 Target targets[4] = {target_1, target_2, target_3, target_4};
 
 int redPoints = 0;
