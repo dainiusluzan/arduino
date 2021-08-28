@@ -19,7 +19,7 @@ class Target {
     Led redLed;
     Led blueLed;
     int targetPin;
-    int hitTime = 3000;
+    int hitTime = 2000;
     int active = 0;
     long startTime;
     int points[3] = {0, 0, 0};
@@ -38,20 +38,22 @@ class Target {
     }
 
     bool update() {
-      if (active != 0 && ( hit())) {
+      if (active != 0 && millis() - startTime > hitTime) {
         active = 0;
         turnOff();
+        return false;
+      } else if (active != 0 && hit()) {
+        active = 0;
+        turnOff();
+        return true;
       }
     }
 
     bool hit() {
-      if (random(1, 4) == 1) {
-        points[active]++;
-        Serial.print("HIT "); Serial.print(targetPin); Serial.print(" Points "); Serial.print(points[active]); Serial.print(" Color "); Serial.print(active);Serial.print("\n ");
+      if (digitalRead(targetPin) == 1) {
         return true;
       }
       return false;
-      //return digitalRead(targetPin) == 1;
     }
 
     void turnOn(int color) {
