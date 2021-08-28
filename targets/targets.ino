@@ -79,54 +79,66 @@ Target target_3(26, 40, 41);
 Target target_4(28, 38, 39);
 Target targets[4] = {target_1, target_2, target_3, target_4};
 
+const int RED = 1;
+const int BLUE = 2;
 int redPoints = 0;
 int bluePoints = 0;
+int points[3] = {0,0,0};
 long gameStarted;
-long gameTime = 15000;
+long gameTime = 45000;
 bool gameOver = false;
 
 void setup() {
   Serial.begin(9600);
   randomSeed(analogRead(0));
-  gameStarted = millis();
 }
 
 void loop() {
-  blinkTargets(RED, 1);
-  redPoints = 0;
-  bluePoints = 0;
-  targets[2].activate(RED);
-  targets[1].activate(BLUE);
-  while (gameOver == false) {
-    for (int i = 0; i++, i < 4;) {
-      targets[i].update();
-    }
-    if (isAnyTargetActive(RED) == false) {
-      Serial.print("No active red"); Serial.print("\n");
-      activateRandom(RED);
-      Serial.print("WHILE "); Serial.print(targets[0].active); Serial.print(targets[1].active); Serial.print(targets[2].active); Serial.print(targets[3].active); Serial.print("\n");
-    }
-    if (isAnyTargetActive(BLUE) == false) {
-      Serial.print("No active blue"); Serial.print("\n");
-      activateRandom(BLUE);
-      Serial.print("WHILE "); Serial.print(targets[0].active); Serial.print(targets[1].active); Serial.print(targets[2].active); Serial.print(targets[3].active); Serial.print("\n");
-    }
 
-    delay(50);
+  initiativeBlinking();
+  
+  runTheGame(RED);
+  
+  initiativeBlinking();
+
+  runTheGame(BLUE);
+ 
+  
+  if (points[RED] > points[BLUE]) {
+    blinkTargets(RED, 10);
+  } else {
+    blinkTargets(BLUE, 10);
+  }
+  
+  Serial.print("\nRED POINTS "); Serial.print(redPoints); Serial.print(" BLUE POINTS "); Serial.print(bluePoints);
+  Serial.print("\n Game over \n");
+  delay(120000);
+}
+
+void runTheGame(int color) {
+  gameStarted = millis();
+  gameOver = false;
+  while (gameOver == false) {
+    
+    for (int i = 0;  i < 4; i++) {
+      if (targets[i].update() == true) {
+        points[color] += 1;
+        Serial.print(points[color]);
+        Serial.print("\n\n");
+        delay(500);
+      }
+    }
+    if (isAnyTargetActive(color) == false) {
+      activateRandom(color);
+    }
+    
+    delay(100);
+    
+    // Check if time run out
     if (millis() - gameStarted > gameTime) {
       gameOver = true;
     }
   }
-
-
-  for (int i = 0; i++, i < 4;) {
-    redPoints += targets[i].points[RED];
-    bluePoints += targets[i].points[BLUE];
-  }
-
-  Serial.print("     RED POINTS "); Serial.print(redPoints); Serial.print(" BLUE POINTS "); Serial.print(bluePoints);
-  Serial.print("\n Game over \n");
-  delay(100000000);
 }
 
 bool isAnyTargetActive(int color) {
@@ -144,6 +156,16 @@ void activateRandom(int color) {
   }
 }
 
+void initiativeBlinking() {
+    for (int i = 0;  i < 4; i++) {
+    targets[i].turnOn(RED);
+    delay(400);
+    targets[i].turnOff();
+    targets[i].turnOn(BLUE);
+    delay(400);
+    targets[i].turnOff();
+  }
+}
 
 void blinkTargets(int color, int times) {
   for (int i = 0;  i < times; i++) {
@@ -157,16 +179,5 @@ void blinkTargets(int color, int times) {
       delay(77);
     }
 
-  }
-}
-
-void initiativeBlinking() {
-    for (int i = 0;  i < 4; i++) {
-    targets[i].turnOn(RED);
-    delay(400);
-    targets[i].turnOff();
-    targets[i].turnOn(BLUE);
-    delay(400);
-    targets[i].turnOff();
   }
 }
