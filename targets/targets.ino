@@ -94,9 +94,6 @@ void loop() {
   targets[2].activate(RED);
   targets[1].activate(BLUE);
   while (gameOver == false) {
-    if (millis() - gameStarted > gameTime) {
-      gameOver = true;
-    }
     for (int i = 0; i++, i < 4;) {
       targets[i].update();
     }
@@ -112,7 +109,9 @@ void loop() {
     }
 
     delay(50);
-    
+    if (millis() - gameStarted > gameTime) {
+      gameOver = true;
+    }
   }
 
 
