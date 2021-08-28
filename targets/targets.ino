@@ -156,3 +156,14 @@ void blinkTargets(int color, int times) {
 
   }
 }
+
+void initiativeBlinking() {
+    for (int i = 0;  i < 4; i++) {
+    targets[i].turnOn(RED);
+    delay(400);
+    targets[i].turnOff();
+    targets[i].turnOn(BLUE);
+    delay(400);
+    targets[i].turnOff();
+  }
+}
