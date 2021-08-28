@@ -89,6 +89,7 @@ void setup() {
 }
 
 void loop() {
+  blinkTargets(RED, 1);
   redPoints = 0;
   bluePoints = 0;
   targets[2].activate(RED);
@@ -137,5 +138,21 @@ void activateRandom(int color) {
       targets[targetNr].activate(color);
       found = true;
     }
+  }
+}
+
+
+void blinkTargets(int color, int times) {
+  for (int i = 0;  i < times; i++) {
+    for (int s = 0;  s < 4; s++) {
+      targets[s].turnOn(color);
+      delay(77);
+    }
+
+    for (int s = 0;  s < 4; s++) {
+      targets[s].turnOff();
+      delay(77);
+    }
+
   }
 }

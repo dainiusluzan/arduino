@@ -1,0 +1,6 @@
+{
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "port": "/dev/tty.wchusbserial1410",
+    "sketch": "targets/targets.ino"
+}
