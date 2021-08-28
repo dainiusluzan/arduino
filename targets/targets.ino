@@ -3,13 +3,14 @@ class Led {
     int pin;
     void construct(int ledPin) {
       pin = ledPin;
-      pinMode(pin, INPUT);
-    }
-    void on() {
+      pinMode(pin, OUTPUT);
       digitalWrite(pin, HIGH);
     }
-    void off() {
+    void on() {
       digitalWrite(pin, LOW);
+    }
+    void off() {
+      digitalWrite(pin, HIGH);
     }
 };
 
